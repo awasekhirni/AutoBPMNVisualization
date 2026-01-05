@@ -1,0 +1,67 @@
+/*
+ * Auto BPMN 2.0 Visualization Tool for Automation with Multi-Agent Systems (MAS)
+ *--Copyright 2025 β ORI Inc.Canada All Rights Reserved.
+ * Author: Awase Khirni Syed Ph.D.
+ * Summary: These templates provide a means to bridge the gap between traditional Business Process Management (BPMN 2.0) concepts and modern Multi-Agent Systems (MAS).
+ * These are designed to serve as " Single Source of Truth" that can be used by business analysts to visualize the flow and by engineers to automate the orchestration of AI agents. 
+ * I have identified this as a major gap, that would benefit Small and Medium Businesses. 
+ * Specifically designed to capture every granular detail required to visually map a process and crucially to generate the XML or JSON configuration required by any workflow engines (Camunda, Zeebe, Activiti, or Temporal) and diagramming libraries like MermaidJS
+*/
+
+
+
+
+
+Table Name: Master BPMN Process Definition Template Table with Agents Specification
+Process ID	Step Name	Visual Element (BPMN)	Agent Type	Agent ID / Name	Agent Role / Goal	Trigger / Input Data	Tools / Capabilities	Logic / Decision Rules	Output / Handoff	Next Step ID	Error Handling
+PID-001	Start Process	Start Event	N/A	System	Initiate workflow based on external signal.	API Webhook / Scheduled Cron	Database Connector	If data valid -> Proceed; Else -> End.	Initial Context JSON	PID-002	Log error; Notify Admin.
+PID-002	Data Extraction	Service Task	Autonomous Agent	Agent-Scraper	Extract unstructured data from source docs.	File Path / URL	OCR, PDF Parser, Web Scraper	N/A (Execution)	Structured Text / JSON	PID-003	Retry 3x; Escalate to Agent-Human.
+PID-003	Data Validation	Exclusive Gateway	Semi-Autonomous	Agent-Validator	Verify extracted data against schema rules.	Structured Text	JSON Schema Validator, LLM	IF confidence > 0.95 THEN PID-004	Validation Status + Flags	(Branch)	Flag for manual review.
+								ELSE IF confidence < 0.50 THEN PID-005			
+								ELSE PID-006			
+PID-004	Auto-Approval	Script Task	Rule-Based	System-Rule	Apply standard business logic.	Validated Data	SQL Database	Check credit limit / inventory status.	Approval Decision	PID-007	Block transaction; Trigger Alert.
+PID-005	Human Review	User Task	Human	Human-Manager	Manual review of ambiguous data points.	Exception Report + UI Link	Dashboard UI	N/A	Manual Decision	PID-007	Timeout -> Escalate to Director.
+PID-006	Refinement Loop	Sub-Process	Autonomous Agent	Agent-Clerk	Ask user for missing info via chat/email.	Low Confidence Data	Email API, Chatbot API	Loop until data is complete.	Updated Data	PID-003	Max 3 attempts; Then reject.
+PID-007	Report Generation	Service Task	Generative Agent	Agent-Writer	Summarize process results into natural language.	Approval Decision + Data	LLM (GPT-4/Claude), Template Engine	N/A	PDF / Email Report	PID-008	Use fallback template.
+PID-008	End Process	End Event	N/A	System	Archive process and close loop.	Final Report	Archival System	N/A	Process Complete	TERMINATE	N/A
+
+--##################################################################################################################################
+Master BPMN2.0 Process Definition Table 
+Core ID	Element Name	Element Type	Event/Task Sub-Type	Swimlane	Lane/Actor	Incoming Flows (Sources)	Outgoing Flows (Targets) & Conditions	Documentation / Description
+SID-001	e.g., Start Order	Start Event	None / Message / Timer / Signal	Order Mgmt	Customer	N/A	Flow-01 (Default)	Triggered when customer submits checkout.
+SID-002	e.g., Validate Stock	Service Task	General / Send / Receive	Order Mgmt	System	Flow-01	Flow-02 (If Valid)	Calls inventory microservice API.
+							Flow-03 (If Invalid)	
+SID-003	e.g., Check Risk?	Exclusive Gateway	Data-Based / Event-Based	Order Mgmt	System	Flow-02	Flow-04 (High Risk)	Decision diamond based on credit score.
+							Flow-05 (Low Risk)	
+SID-004	e.g., Manual Review	User Task	Manual / Form	Finance	Manager	Flow-04	Flow-06	Requires human intervention UI.
+SID-005	e.g., Process Payment	Business Rule Task	DMN / Rule Engine	Order Mgmt	System	Flow-05	Flow-07	Uses DRD table to calculate discounts.
+SID-006	e.g., Error Notify	Intermediate Event	Error / Escalation	Notifications	System	Error-Throw	Flow-08	Catches error from Payment Gateway.
+SID-007	e.g., Archive	Script Task	Script / Shell	Order Mgmt	System	Flow-06, Flow-07	Flow-09	Updates database status to 'COMPLETE'.
+SID-008	e.g., End Success	End Event	Terminate / Message	Order Mgmt	Customer	Flow-09	N/A	Sends confirmation email.
+
+--##################################################################################################################################
+Technical Implementation & Attributes Matrix 
+Core ID	Task Implementation	Execution Listeners	Input Parameters	Output Parameters	Async Before	Async After	Multi-Instance (Loop)	Boundary Events
+SID-002	Java Class / Expression / Delegate	create: Logger	inventoryId: ${orderId}	stockStatus: Result	TRUE	FALSE	None	Timer-01 (Duration: 5m)
+SID-004	Form Key: review-form.html	complete: AuditLog	userId: ${assignee}	decision: Approved	FALSE	FALSE	None	None
+SID-005	DMN Ref: discount-calculator	None	customerType: Variable	finalPrice: Variable	FALSE	FALSE	None	None
+SID-007	Script: Groovy / Python	None	N/A	archiveId: UUID	TRUE	FALSE	Sequential	None
+
+--##################################################################################################################################
+
+Visual Data Objects and Associations (Data Objects & Artefacts Configuration)
+
+Data ID	Data Name	Data Type	Associated Element ID	State (Initial/Final)	Visual Association
+DO-01	OrderRequest	JSON Object	SID-001	New	Solid Line (Input)
+DO-02	RiskReport	PDF / Object	SID-004	Pending	Dashed Line (I/O)
+DO-03	Invoice	XML	SID-008	Paid	Solid Line (Output)
+
+
+--##################################################################################################################################
+
+
+
+
+
+
+
