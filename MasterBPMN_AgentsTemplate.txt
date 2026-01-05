@@ -180,4 +180,9 @@ PID-006	Refinement Loop	Sub-Process	Autonomous Agent	Agent-Clerk	Ask user for mi
 PID-007	Report Generation	Service Task	Generative Agent	Agent-Writer	Summarize process results into natural language.	Approval Decision + Data	LLM (GPT-4/Claude), Template Engine	N/A	PDF / Email Report	PID-008	Use fallback template.
 PID-008	End Process	End Event	N/A	System	Archive process and close loop.	Final Report	Archival System	N/A	Process Complete	TERMINATE	N/A
 
-
+#Todo 
+1. Add tags to each BPMN/ Categorization/ Project Mapping/ Reusability
+2. Add versioning and tie this to gitea or forgejo based version as it is json or xml easily versioned without any hassle
+3. Repository for templating and reusing it 
+4. digramming integrations gojs, yfiles(for automatic layouts), ofcourse our D3.js, cytoscape.js , G6, maxgraph, graphviz
+5. icon libraries -phosphor icons, tabler icons, heroicons, remix icons, devicons, simple icons, vector logozone. Need to see how i could apply theme based styling as well similar to bootswatch
